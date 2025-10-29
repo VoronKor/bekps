@@ -7,18 +7,18 @@ apt update
 apt upgrade -y
 apt install docker.io docker-compose docker sudo apparmor -y
 
-useradd -m -G docker tbot2
-chsh tbot2 -s /bin/bash
+useradd -m -G docker tbot3
+chsh tbot3 -s /bin/bash
 
 systemctl enable docker
 systemctl restart docker
 
-cd ~tbot2
-cat > install.sh <<EOF
+cd ~tbot3
+cat > installs.sh <<EOF
 #!/bin/bash
 cd
-read -p "Введите название каталога где будет хранится бот [bot1]: " bot_name
-if [ "\${bot_name}" == "" ]; then bot_name="bot1"; fi
+read -p "Введите название каталога где будет хранится бот [bot]: " bot_name
+if [ "\${bot_name}" == "" ]; then bot_name="bot3"; fi
 mkdir -p \${bot_name}
 cd \${bot_name}
 echo "Бот установлен в каталог $(pwd)"
@@ -50,5 +50,6 @@ docker-compose up -d
 read -p "Нужно создать еще одного бота? [y/N]: " vopros
 if [ "\${vopros}" == "y" ] || [ "\${vopros}" == "Y" ]; then cd; ./install.sh; fi
 EOF
-chmod +x install.sh
-su - tbot2 ./install.sh
+chmod +x installs.sh
+
+su - tbot3 ./installs.sh
